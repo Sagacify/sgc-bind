@@ -1,0 +1,40 @@
+# Created by http://www.gitignore.io
+
+### Dot files ###
+.*
+
+### Git ###
+!/.gitignore
+!/.gitmodules
+
+### Logs ###
+logs
+*.log
+
+### Runtime data ###
+pids
+*.pid
+*.seed
+
+### NPM dependency directory ###
+node_modules
+
+### Bower dependency directory ###
+src/public/src/bower_components
+!/.bowerrc
+
+### Build output directory ###
+src/public/dist
+
+### JSHint ###
+!/.jshintrc-server
+!/.jshintrc-client
+
+### JSCSrc ###
+!/.jscsrc
+
+### Travis ###
+!/.travis.yml
+
+### Test reports ###
+test/coverage
