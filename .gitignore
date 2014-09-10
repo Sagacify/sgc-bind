@@ -24,11 +24,10 @@ src/public/src/bower_components
 !/.bowerrc
 
 ### Build output directory ###
-src/public/dist
+#src/public/dist
 
 ### JSHint ###
-!/.jshintrc-server
-!/.jshintrc-client
+!/.jshintrc
 
 ### JSCSrc ###
 !/.jscsrc

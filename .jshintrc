@@ -1,0 +1,39 @@
+{
+	"es3": true,
+	"boss": true,
+	"expr": true,
+	"curly": true,
+	"undef": true,
+	"noarg": true,
+	"immed": true,
+	"eqnull": true,
+	"strict": true,
+	"unused": true,
+	"freeze": true,
+	"eqeqeq": true,
+	"newcap": true,
+	"nonbsp": false,
+	"noempty": true,
+	"quotmark": "single",
+	"evil": "true",
+
+	"browser": true,
+	"node": false,
+
+	"globals": {
+		"module": false,
+
+		"console": false,
+
+		"requirejs": false,
+		"require": false,
+		"define": false,
+		"it": false,
+		"describe": false,
+
+		"Backbone": false,
+		"App": false,
+		"$": false,
+		"_": false
+    }
+}
