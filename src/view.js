@@ -1,5 +1,5 @@
 define([
-	'backbone.marionette',
+	'marionette',
 	'./mixins/ModelBindMixin',
 	'./mixins/ActionsBindMixin',
 	'./mixins/OutletBindMixin'

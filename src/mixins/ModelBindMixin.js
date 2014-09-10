@@ -77,11 +77,15 @@ define([], function () {
 			this._bindFunction = function (model, value, options) {
 
 				if (this.isJqueryEvalAction()) {
+
+					//Context: model, value, this.node
+					// $[value ? 'hide' : 'show']();
+					// $.attr('src', value);
+
 					//Jquery eval function
 					var stringToApply = 'this.node' + this.viewAction.substring(1);
 					// console.log('--->'+stringToApply);
 					try {
-						eval(stringToApply);
 					} catch (err) {
 						console.log(err);
 						throw 'Bad formated action ' + this.viewAction;
