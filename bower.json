@@ -1,0 +1,37 @@
+{
+  "name": "sgc-bind",
+  "description": "",
+  "homepage": "http://www.sagacify.com",
+  "main": "sgc-bind.js",
+  "version": "1.0.0",
+  "keywords": ["model", "view", "controller", "bind", "client", "browser"],
+  "author": {
+    "name": "Sagacify Team",
+    "email": "info@sagacify.com"
+  },
+  "ignore": [
+    "docs",
+    "reports",
+    "spec",
+    ".gitignore",
+    ".travis.yml",
+    ".editorconfig",
+    ".jshintc",
+    "jsdoc",
+    "build",
+    "build.cmd",
+    "Gruntfile.js",
+    "CONTRIBUTING.md",
+    "package.json",
+    "addrem",
+    "getdeps",
+    "tmp"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sagacify/sgc-bind.git"
+  },
+  "dependencies": {
+    "backbone.marionette"  : "v1.8.8"
+  }
+}
