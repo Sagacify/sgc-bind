@@ -10,7 +10,7 @@ define([
 	var defaultUnbindUIElements = Marionette.View.prototype.unbindUIElements;
 
 	Marionette.View.prototype.bindUIElements = function(){
-		this.bindToModel();
+		this.__createAllBinders();
 		this.bindOutlets();
 		this.__bindActions();
 		this.__createAllBinders();
