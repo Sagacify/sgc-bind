@@ -1,6 +1,31 @@
-describe('Mon premier test', function() {
+define([
+	'../test/action_test',
+	'../test/outlet_test',
+	'../test/bind_test',
+	
+	'chai',
+	'sinon',
+	'mocha',
+	'text'
+], function (
+	action_test,
+	outlet_test,
+	bind_test
+	) {
 	'use strict';
-	it('test bidon', function() {
-		return 1 === 1;
-	});
+
+	var mocha = window.mocha;
+
+	mocha.setup('bdd');
+	
+	action_test();
+	outlet_test();
+	bind_test();
+
+	if (window.mochaPhantomJS) {
+		window.mochaPhantomJS.run();
+	}
+	else {
+		mocha.run();
+	}
 });

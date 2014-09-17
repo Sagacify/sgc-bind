@@ -5,16 +5,6 @@ define([], function () {
 
 		outletsBind: false,
 
-		_putUids: function (dataType) {
-			var me = this;
-
-			$('[data-' + dataType + ']', this.el).each(function () {
-				var $node = $(this);
-				$node.attr('data-' + dataType + '-' + me.uid, $node.data()[dataType]);
-				$node.removeAttr('data-' + dataType);
-			});
-		},
-
 		bindOutlets: function () {
 			if (!this.outletsBind) {
 				return;
@@ -24,8 +14,8 @@ define([], function () {
 
 			this._putUids('sgoutlet');
 
-			$('[data-sgoutlet-' + this.uid + ']', this.el).each(function () {
-				var outletName = $(this).attr('data-sgoutlet-' + me.uid);
+			$('[data-sgoutlet-' + this.cid + ']', this.el).each(function () {
+				var outletName = $(this).attr('data-sgoutlet-' + me.cid);
 				me.bindOutlet(this, outletName);
 			});
 		},
@@ -46,6 +36,10 @@ define([], function () {
 			}
 
 			return this.outlets;
+		},
+
+		__clearOutlets: function(){
+			this.outlets = {};
 		}
 	};
 });

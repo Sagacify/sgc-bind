@@ -15,18 +15,18 @@ define([], function(){
 			this._putUids('sgaction');
 
 			var me = this;
-			$('[data-sgaction-'+this.uid+']', this.el).each(function(){
+			$('[data-sgaction-'+this.cid+']', this.el).each(function(){
 				
-				var data = $(this).attr('data-sgaction-'+me.uid);
+				var data = $(this).attr('data-sgaction-'+me.cid);
 				var actionsInfo = data && data.split(':');
 				if (!actionsInfo || !actionsInfo.length) {
 					throw 'Error for data-sgaction for the widget ';
 				}
-
 				var method, trigger;
+
 				if (actionsInfo.length === 1) {
 					method = actionsInfo[0];
-					trigger = this.__defaultSGAction;
+					trigger = me.__defaultSGAction;
 				} else {
 					method = actionsInfo[1];
 					trigger = actionsInfo[0];
@@ -35,22 +35,22 @@ define([], function(){
 			});			
 		},
 
-
 		__bindAction: function(node, trigger, methodName){
-			if (!this[methodName]) {
-				throw 'Define method for action:'+methodName;
+			if (!methodName in this || !_.isFunction(this[methodName])) {
+				throw new Error('Define method for action:'+methodName);
 			}
 
 			var me = this;
-			this.listenTo($(node), trigger, function(evt){
+			$(node).on(trigger, function(evt){
 				me[methodName](evt, node);
 			});
 
-			if (methodName in this.__getActionNodes()) {
-				var existingNode = this.__getActionNodes()[methodName].node;
-				this.__getActionNodes()[methodName].node = $(existingNode.get().concat([node]));
+
+			var existingNode = this.__getActionNodes()[methodName+"-"+trigger];
+			if (existingNode && existingNode.trigger === trigger) {
+				this.__getActionNodes()[methodName+"-"+trigger].node = $(existingNode.node.get().concat([node]));
 			} else {
-				this.__getActionNodes()[methodName] = {
+				this.__getActionNodes()[methodName+"-"+trigger] = {
 					node : $(node),
 					trigger : trigger
 				};
@@ -63,7 +63,7 @@ define([], function(){
 			}
 
 			_.each(this.__getActionNodes(), function(value){
-				this.stopListening(value.node, value.trigger);
+				value.node.off(value.trigger);
 			}, this);
 			this.__actionNodes = {};
 		},

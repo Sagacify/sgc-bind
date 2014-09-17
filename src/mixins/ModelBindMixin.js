@@ -1,4 +1,8 @@
-define([], function () {
+define([
+	'../utils'
+], function (
+	utils
+) {
 	'use strict';
 
 	var Binder = function (model, view, controller) {
@@ -23,10 +27,10 @@ define([], function () {
 		// Call nameToEl if present in controller
 
 		retrieveNodeData: function () {
-			return $(this.node).attr('data-sgbind-' + this.controller.uid);
+			return $(this.node).attr('data-sgbind-' + this.controller.cid);
 		},
 		setNodeData: function (data) {
-			$(this.node).attr('data-sgbind-' + this.controller.uid, data);
+			$(this.node).attr('data-sgbind-' + this.controller.cid, data);
 		},
 
 		//Prepare the binder
@@ -45,10 +49,13 @@ define([], function () {
 			}
 
 			//Syntaxic sugar :name  <=> change:name
-			if (this.trigger.startsWith(':')) {
-				this.attribute = this.trigger.replace(':', '');
+			if ( utils.startsWith(this.trigger, ':')) {
 				this.trigger = 'change' + this.trigger;
 			}
+
+			if (utils.startsWith(this.trigger, 'change:')) {
+				this.attribute = this.trigger.split('change:')[1];
+			};
 
 			if (splittedAttribute.length >= 2) {
 				//Action is define 
@@ -66,16 +73,16 @@ define([], function () {
 				}
 			}
 
-			$(this.node).removeAttr('data-sgbind-' + this.controller.uid);
+			$(this.node).removeAttr('data-sgbind-' + this.controller.cid);
 		},
 
 		isJqueryEvalAction: function () {
-			return this.viewAction.startsWith('$');
+			return utils.startsWith(this.viewAction, '$');
 		},
 
 		configureBindFunction: function () {
 			this._bindFunction = function (model, value, options) {
-
+				
 				if (this.isJqueryEvalAction()) {
 
 					//Context: model, value, this.node
@@ -86,6 +93,7 @@ define([], function () {
 					var stringToApply = 'this.node' + this.viewAction.substring(1);
 					// console.log('--->'+stringToApply);
 					try {
+						eval(stringToApply);
 					} catch (err) {
 						console.log(err);
 						throw 'Bad formated action ' + this.viewAction;
@@ -160,19 +168,19 @@ define([], function () {
 			this.__getModelBinds();
 
 			var me = this;
-			$('[data-sgbind-' + this.uid + ']', this.el).each(function () {
+			$('[data-sgbind-' + this.cid + ']', this.el).each(function () {
 				// without [] -> single bind
 				// with only one [] -> single bind
 				// with multiple [] -> multiple binds
-				var value = $(this).attr('data-sgbind-' + me.uid);
+				var value = $(this).attr('data-sgbind-' + me.cid);
 
-				if (value.startsWith('[')) {
+				if (utils.startsWith(value, '[')) {
 					var values = value.split('],[');
 					values[0] = values.first().slice(1);
 					values[values.length - 1] = values.last().slice(0, -1);
 					var self = this;
 					values.forEach(function (bind) {
-						var el = $(self).attr('data-sgbind-' + me.uid, bind);
+						var el = $(self).attr('data-sgbind-' + me.cid, bind);
 						me.__addBind(new Binder(me.model, el, me));
 					});
 				} else {
