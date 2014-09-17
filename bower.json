@@ -39,7 +39,6 @@
   },
   "dependencies": {
     "marionette": "^2.2.0"
-    
   },
   "_release": "592d39e3de",
   "_resolution": {
