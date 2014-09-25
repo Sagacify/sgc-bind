@@ -7,9 +7,12 @@ define([
     'text!./templates/templateAction4.html',
     'text!./templates/templateAction5.html',
     'text!./templates/templateAction6.html',
+    'text!./templates/templateAction7.html',
+    
     
 	'chai', 
-	'sinonIE',
+	'sinonIE'
+
 ], function(SGCBind,
 
     templateAction1,
@@ -18,6 +21,7 @@ define([
     templateAction4,
     templateAction5,
     templateAction6,
+    templateAction7,
 
     chai
 )  {
@@ -27,14 +31,14 @@ define([
     return function() {
         chai.should();
 
-        describe('Testing actions Marionette View', function(done) {
+        describe('Testing actions Marionette View', function() {
 
             it('Test not trigger if actionsbind false', function(){
 
                 var View = Backbone.Marionette.ItemView.extend({
                     actionsBind:false,
-                    template: templateAction1,
-                })
+                    template: templateAction1
+                });
 
                 var view = new View();
                 view.render();
@@ -53,7 +57,7 @@ define([
                     methodToCall: function(){
                         done();
                     }
-                })
+                });
 
                 var view = new View();
                 view.render();
@@ -72,7 +76,7 @@ define([
                     methodToCall: function(){
                         done();
                     }
-                })
+                });
 
                 var view = new View();
                 view.render();
@@ -87,10 +91,10 @@ define([
                     
                     template: templateAction3,
 
-                    inputChange: function(evt, node){
+                    inputChange: function(){
                         done();
                     }
-                })
+                });
                 var view = new View();
                 view.render();
                 view.$el.find('input').trigger('change');
@@ -104,7 +108,7 @@ define([
                         actionsBind:true,
                         template: templateAction1,
                         methodToCall:null
-                    })
+                    });
                     var view = new View();
                     view.render();
                 }).to['throw'](Error);
@@ -112,8 +116,8 @@ define([
                 chai.expect(function(){
                     var View = Backbone.Marionette.ItemView.extend({
                         actionsBind:true,
-                        template: templateAction1,
-                    })
+                        template: templateAction1
+                    });
                     var view = new View();
                     view.render();
                 }).to['throw'](Error);
@@ -127,9 +131,9 @@ define([
                     
                     template: templateAction4,
 
-                    methodToCall: function(evt, node){
+                    methodToCall: function(){
                     }
-                })
+                });
                 var view = new View();
                 view.render();
 
@@ -145,9 +149,9 @@ define([
                     
                     template: templateAction5,
 
-                    methodToCall: function(evt, node){
+                    methodToCall: function(){
                     }
-                })
+                });
                 var view = new View();
                 view.render();
 
@@ -166,10 +170,10 @@ define([
                     
                     template: templateAction5,
 
-                    methodToCall: function(evt, node){
+                    methodToCall: function(){
                         done(new Error('Listenner always present'));
                     }
-                })
+                });
                 var view = new View();
                 view.render();
 
@@ -183,21 +187,21 @@ define([
 
             it('Test (__bindAction)  add two bind on same node with different method', function(){
 
-                var called = "";
+                var called = '';
                 var View = Backbone.Marionette.ItemView.extend({
 
                     actionsBind:true,
                     
                     template: templateAction6,
 
-                    methodToCall: function(evt, node){
-                        called += "1";
+                    methodToCall: function(){
+                        called += '1';
                     },
 
-                    methodToCall1: function(evt, node){
-                        called += "2";
+                    methodToCall1: function(){
+                        called += '2';
                     }
-                })
+                });
                 var view = new View();
                 view.render();
 
@@ -208,6 +212,94 @@ define([
             });
 
 
+            it('Test (__bindAction) add uiid for parent node without super parent', function(){
+
+                // var called = '';
+                var View = Backbone.Marionette.ItemView.extend({
+
+                    actionsBind:true,
+                    outletsBind:true,
+                    
+                    template: templateAction7,
+                    
+                    fakeAction: function(){
+                    }
+                });
+                var view = new View();
+                view.$el.attr('data-sgaction', 'click:fakeAction');
+                view.$el.attr('data-sgoutlet', 'name');
+
+                view.render();
+
+                view.$el.attr('data-sgoutlet-'+view.cid).should.equal('name');
+                view.$el.attr('data-sgaction-'+view.cid).should.equal('click:fakeAction');
+
+            });
+
+
+            it('Test (__bindAction) add uiid for parent node with super parent', function(){
+
+                var View = Backbone.Marionette.ItemView.extend({
+
+                    actionsBind:true,
+                    outletsBind:true,
+                    
+                    template: templateAction7,
+
+                    fakeAction: function(){
+
+                    }
+                });
+                var view = new View();
+
+                view.$el.attr('data-sgaction', 'click:fakeAction');
+                view.$el.attr('data-sgoutlet', 'name');
+
+
+                var badAction = $('<div>').attr('data-sgaction', 'click:badAction');
+                $('<div>')
+                .append(view.$el)
+                .append(
+                    badAction
+                );
+                
+                view.render();
+
+                chai.expect(badAction.attr('data-sgoutlet'+view.cid)).to.be['undefined'];
+                view.$el.attr('data-sgoutlet-'+view.cid).should.equal('name');
+                view.$el.attr('data-sgaction-'+view.cid).should.equal('click:fakeAction');
+
+            });
+
+
+
+            it('Test (__bindAction) add actions for main dom node', function(done){
+
+                var View = Backbone.Marionette.ItemView.extend({
+
+                    actionsBind:true,
+                    outletsBind:true,
+                    
+                    template: templateAction7,
+
+                    fakeAction: function(){
+                        done();
+                    },
+
+                    bindUIElements: function(){
+                        return Backbone.Marionette.ItemView.prototype.bindUIElements.apply(this, arguments);
+                    }
+
+                });
+                var view = new View();
+
+                view.$el.attr('data-sgaction', 'click:fakeAction');
+
+                view.render();
+
+                view.$el.trigger('click');
+
+            });
 
         });
     };

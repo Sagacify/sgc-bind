@@ -3,28 +3,7 @@ define('utils',[], function (
 	
 
 	var utils = {};
-
-	// utils.asGetter = function(string){
-	// 	return 'get'+utils.capitalize(string);
-	// };
-
-	// utils.asSetter = function(string){
-	// 	return 'set'+utils.capitalize(string);
-	// };
-
-	// utils.capitalize = function(string) {
-	// 	var capitalized = '';
-	// 	var split = string.split('.');
-	// 	split.forEach(function(part){
-	// 		capitalized += part.charAt(0).toUpperCase()+part.slice(1);
-	// 	});
-	//     return capitalized;
-	// };
-
-	// utils.contains = function(string, str){
-	// 	return ~string.indexOf(str);
-	// };
-
+	
 	utils.startsWith = function(string, str){
 		return string.slice(0, str.length) === str;
 	};
@@ -205,7 +184,8 @@ define('mixins/ModelBindMixin',[
 			this.__getModelBinds();
 
 			var me = this;
-			$('[data-sgbind-' + this.cid + ']', this.el).each(function () {
+			this._retrieveWithUids('sgbind').each(function(){
+			// this.$('[data-sgbind-' + this.cid + ']').each(function () {
 				// without [] -> single bind
 				// with only one [] -> single bind
 				// with multiple [] -> multiple binds
@@ -289,7 +269,8 @@ define('mixins/ActionsBindMixin',[
 			this._putUids('sgaction');
 
 			var me = this;
-			$('[data-sgaction-'+this.cid+']', this.el).each(function(){
+			this._retrieveWithUids('sgaction').each(function(){
+			// this.$('[data-sgaction-'+this.cid+']').each(function(){
 				var data = $(this).attr('data-sgaction-'+me.cid);
 
 
@@ -305,14 +286,6 @@ define('mixins/ActionsBindMixin',[
 				} else {
 					me.__bindAction(this, data.trim());
 				}
-
-
-				// var actionsInfo = data && data.split(':');
-				// if (!actionsInfo || !actionsInfo.length) {
-				// 	throw 'Error for data-sgaction for the widget ';
-				// }
-
-				// me.__bindAction(this, actionsInfo);
 			});			
 		},
 
@@ -383,7 +356,8 @@ define('mixins/OutletBindMixin',[], function () {
 
 			this._putUids('sgoutlet');
 
-			$('[data-sgoutlet-' + this.cid + ']', this.el).each(function () {
+			this._retrieveWithUids('sgoutlet').each(function(){
+			// this.$('[data-sgoutlet-' + this.cid + ']').each(function () {
 				var outletName = $(this).attr('data-sgoutlet-' + me.cid);
 				me.bindOutlet(this, outletName);
 			});
@@ -441,13 +415,39 @@ define('sgc-bind',[
 
 	Marionette.View.prototype._putUids = function (dataType) {	
 
-		var me = this;
-
-		$('[data-' + dataType + ']', this.el).each(function () {
-			var $node = $(this);
+		var appendUIDToEl = function($node){
 			$node.attr('data-' + dataType + '-' + me.cid, $node.data()[dataType]);
 			$node.removeAttr('data-' + dataType);
+		}
+
+		var me = this;
+		this.$('[data-' + dataType + ']').each(function () {
+			appendUIDToEl($(this));
 		});
+
+		if (!this.$el.parent().length) {
+			$('<div>').append(this.$el).find('[data-'+dataType+']').filter(this.$el).each(function(){
+				appendUIDToEl($(this));
+			});
+		} else {
+			this.$el.parent().find('[data-'+dataType+']').filter(this.$el).each(function(){
+				appendUIDToEl($(this));
+			});
+		}
+	};
+
+	Marionette.View.prototype._retrieveWithUids = function (dataType) {	
+		
+		var items = this.$('[data-' + dataType + '-'+this.cid+']');
+
+		var parentItem;
+		if (!this.$el.parent().length) {
+			parentItem = $('<div>').append(this.$el).find('[data-'+dataType+'-'+this.cid+']');
+		} else {
+			parentItem = this.$el.parent().find('[data-'+dataType+'-'+this.cid+']').filter(this.$el);
+		}
+		
+		return $(items.get().concat(parentItem.get()));;
 	};
 
 

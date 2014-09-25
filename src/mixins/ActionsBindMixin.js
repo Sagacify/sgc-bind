@@ -19,7 +19,8 @@ define([
 			this._putUids('sgaction');
 
 			var me = this;
-			$('[data-sgaction-'+this.cid+']', this.el).each(function(){
+			this._retrieveWithUids('sgaction').each(function(){
+			// this.$('[data-sgaction-'+this.cid+']').each(function(){
 				var data = $(this).attr('data-sgaction-'+me.cid);
 
 
@@ -35,14 +36,6 @@ define([
 				} else {
 					me.__bindAction(this, data.trim());
 				}
-
-
-				// var actionsInfo = data && data.split(':');
-				// if (!actionsInfo || !actionsInfo.length) {
-				// 	throw 'Error for data-sgaction for the widget ';
-				// }
-
-				// me.__bindAction(this, actionsInfo);
 			});			
 		},
 

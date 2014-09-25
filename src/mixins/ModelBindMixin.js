@@ -168,7 +168,8 @@ define([
 			this.__getModelBinds();
 
 			var me = this;
-			$('[data-sgbind-' + this.cid + ']', this.el).each(function () {
+			this._retrieveWithUids('sgbind').each(function(){
+			// this.$('[data-sgbind-' + this.cid + ']').each(function () {
 				// without [] -> single bind
 				// with only one [] -> single bind
 				// with multiple [] -> multiple binds

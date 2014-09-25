@@ -14,7 +14,8 @@ define([], function () {
 
 			this._putUids('sgoutlet');
 
-			$('[data-sgoutlet-' + this.cid + ']', this.el).each(function () {
+			this._retrieveWithUids('sgoutlet').each(function(){
+			// this.$('[data-sgoutlet-' + this.cid + ']').each(function () {
 				var outletName = $(this).attr('data-sgoutlet-' + me.cid);
 				me.bindOutlet(this, outletName);
 			});
