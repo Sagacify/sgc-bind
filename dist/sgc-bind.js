@@ -300,10 +300,10 @@ define('mixins/ActionsBindMixin',[
 					var self = this;
 					datas.forEach(function (bind) {
 						var el = $(self).attr('data-sgbind-' + me.cid, bind);
-						me.__bindAction(el, bind);
+						me.__bindAction(el, bind.trim());
 					});
 				} else {
-					me.__bindAction(this, data);
+					me.__bindAction(this, data.trim());
 				}
 
 
