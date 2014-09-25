@@ -6,6 +6,7 @@ define([
     'text!./templates/templateAction3.html',
     'text!./templates/templateAction4.html',
     'text!./templates/templateAction5.html',
+    'text!./templates/templateAction6.html',
     
 	'chai', 
 	'sinonIE',
@@ -16,6 +17,7 @@ define([
     templateAction3,
     templateAction4,
     templateAction5,
+    templateAction6,
 
     chai
 )  {
@@ -176,6 +178,33 @@ define([
                 _.keys(view.__getActionNodes()).length.should.equal(0);
                 view.$el.find('button').trigger('click');
                 done();
+            });
+
+
+            it('Test (__bindAction)  add two bind on same node with different method', function(){
+
+                var called = "";
+                var View = Backbone.Marionette.ItemView.extend({
+
+                    actionsBind:true,
+                    
+                    template: templateAction6,
+
+                    methodToCall: function(evt, node){
+                        called += "1";
+                    },
+
+                    methodToCall1: function(evt, node){
+                        called += "2";
+                    }
+                })
+                var view = new View();
+                view.render();
+
+                view.$('button').trigger('click');
+                view.$('button').trigger('blur');
+                called.should.equal('12');
+
             });
 
 

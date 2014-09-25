@@ -1,4 +1,8 @@
-define([], function(){
+define([
+	'../utils'
+], function(
+		utils
+){
 	'use strict';	
 	return {
 
@@ -16,26 +20,43 @@ define([], function(){
 
 			var me = this;
 			$('[data-sgaction-'+this.cid+']', this.el).each(function(){
-				
 				var data = $(this).attr('data-sgaction-'+me.cid);
-				var actionsInfo = data && data.split(':');
-				if (!actionsInfo || !actionsInfo.length) {
-					throw 'Error for data-sgaction for the widget ';
-				}
-				var method, trigger;
 
-				if (actionsInfo.length === 1) {
-					method = actionsInfo[0];
-					trigger = me.__defaultSGAction;
+
+				if (utils.startsWith(data, '[')) {
+					var datas = data.split('],[');
+					datas[0] = _.first(datas).slice(1);
+					datas[datas.length - 1] = _.last(datas).slice(0, -1);
+					var self = this;
+					datas.forEach(function (bind) {
+						var el = $(self).attr('data-sgbind-' + me.cid, bind);
+						me.__bindAction(el, bind);
+					});
 				} else {
-					method = actionsInfo[1];
-					trigger = actionsInfo[0];
+					me.__bindAction(this, data);
 				}
-				me.__bindAction(this, trigger, method);
+
+
+				// var actionsInfo = data && data.split(':');
+				// if (!actionsInfo || !actionsInfo.length) {
+				// 	throw 'Error for data-sgaction for the widget ';
+				// }
+
+				// me.__bindAction(this, actionsInfo);
 			});			
 		},
 
-		__bindAction: function(node, trigger, methodName){
+		__bindAction: function(node, actionsInfo){
+			var methodName, trigger;
+			var actionsInfo = actionsInfo && actionsInfo.split(':');
+			if (actionsInfo.length === 1) {
+				methodName = actionsInfo[0];
+				trigger = this.__defaultSGAction;
+			} else {
+				methodName = actionsInfo[1];
+				trigger = actionsInfo[0];
+			}
+
 			if (!methodName in this || !_.isFunction(this[methodName])) {
 				throw new Error('Define method for action:'+methodName);
 			}

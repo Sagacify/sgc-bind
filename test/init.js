@@ -40,7 +40,7 @@ require.config({
 		text: '../bower_components/requirejs-text/text',
 
 		//base url
-		'sgc-bind': 'view',
+		'sgc-bind': 'sgc-bind',
 
 		'test': '../test/test'
 	},
