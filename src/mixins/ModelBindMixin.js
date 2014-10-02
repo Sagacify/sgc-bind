@@ -177,8 +177,8 @@ define([
 
 				if (utils.startsWith(value, '[')) {
 					var values = value.split('],[');
-					values[0] = values.first().slice(1);
-					values[values.length - 1] = values.last().slice(0, -1);
+					values[0] = _.first(values).slice(1);
+					values[values.length - 1] = _.last(values).slice(0, -1);
 					var self = this;
 					values.forEach(function (bind) {
 						var el = $(self).attr('data-sgbind-' + me.cid, bind);
