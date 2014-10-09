@@ -178,7 +178,7 @@ define([
                 view.render();
 
                 _.keys(view.__getActionNodes()).length.should.equal(2);
-                view.destroy();
+                view['close']();
                 _.keys(view.__getActionNodes()).length.should.equal(0);
                 view.$el.find('button').trigger('click');
                 done();

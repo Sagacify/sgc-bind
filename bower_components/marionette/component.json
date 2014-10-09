@@ -1,9 +1,9 @@
 {
   "name": "backbone.marionette",
   "description": "Make your Backbone.js apps dance!",
-  "version": "2.1.0",
+  "version": "1.8.8",
   "repo": "marionettejs/backbone.marionette",
-  "main": "lib/core/backbone.marionette.js",
+  "main": "lib/core/amd/backbone.marionette.js",
   "keywords": [
     "backbone",
     "plugin",
@@ -35,6 +35,6 @@
     "jashkenas/underscore": "*"
   },
   "scripts": [
-    "lib/core/backbone.marionette.js"
+    "lib/core/amd/backbone.marionette.js"
   ]
 }

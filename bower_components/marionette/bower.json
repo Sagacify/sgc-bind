@@ -2,8 +2,11 @@
   "name": "backbone.marionette",
   "description": "Make your Backbone.js apps dance with a composite application architecture!",
   "homepage": "http://marionettejs.org",
-  "main": "./lib/core/backbone.marionette.js",
-  "version": "2.2.1",
+  "main": [
+    "./lib/backbone.marionette.js",
+    "./lib/core/amd/backbone.marionette.js"
+  ],
+  "version": "1.8.8",
   "keywords": [
     "backbone",
     "framework",
@@ -23,7 +26,6 @@
     ".travis.yml",
     ".editorconfig",
     ".jshintc",
-    "jsdoc",
     "build",
     "build.cmd",
     "Gruntfile.js",

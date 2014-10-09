@@ -62,7 +62,7 @@ define([
                 view.render();
                 _.keys(view.outlets).length.should.equal(1);
 				view.outlets.anOutlet.length.should.equal(2);
-				view.destroy();
+				view['close']();
 				_.keys(view.outlets).length.should.equal(0);
 
             });  
