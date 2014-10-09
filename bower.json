@@ -38,7 +38,7 @@
     "url": "https://github.com/Sagacify/sgc-bind.git"
   },
   "dependencies": {
-    "marionette": "^1.8.8",
+    "marionette": "^2.2.0",
     "requirejs": "^2.1.14",
     "requirejs-text": "^2.0.10"
   },
