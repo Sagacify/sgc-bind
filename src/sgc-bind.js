@@ -11,13 +11,12 @@ define([
 	var defaultUnbindUIElements = Marionette.View.prototype.unbindUIElements;
 
 	Marionette.View.prototype.bindUIElements = function(){
-		this.__createAllBinders();
 		this.bindOutlets();
 		this.__bindActions();
 		this.__createAllBinders();
 		return defaultBindUIElements.apply(this, arguments);
 	};
-
+	
 	Marionette.View.prototype.unbindUIElements = function(){
 		this.__destroyAllBinder();
 		this.__unbindActions();
