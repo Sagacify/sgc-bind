@@ -37,7 +37,7 @@
         "test": "phantomjs test/vendor/runner.js test/index.html?noglobals=true && coffee test/model.coffee"
     },
     "main": "sgc-bind.js",
-    "version": "1.0.0",
+    "version": "3.0.0",
     "license": "MIT",
     "repository": {
         "type": "git",
